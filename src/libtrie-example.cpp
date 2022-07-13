@@ -140,11 +140,13 @@ public:
     // errs << "inplace_item_view::construct @ " << &repr << '\n';
     base::construct(repr, std::make_unique<T>(std::forward<Ts>(args)...));
   }
+  /*
   static constexpr void destruct(cacheline &repr) {
     // errs << "inplace_item_view::destruct @ " << &repr << '\n';
     base::destruct(repr);
   }
-  // using base::destruct;
+  */
+  using base::destruct;
   static constexpr T &instance(cacheline &repr) {
     return *base::instance(repr);
   }
