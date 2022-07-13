@@ -627,7 +627,8 @@ public:
 /// This will give a good upperbound of the maximal height of the tree. Also,
 /// tracking the number of values successfully inserted could also help
 /// sometimes.
-template <typename Key, typename T> class trie_tree : trie_node<Key, T> {
+template <typename Key, typename T>
+class trie_tree : private trie_node<Key, T> {
   static_assert(requires { sizeof(Key) == 1; });
   static_assert(requires { std::is_trivially_copyable_v<Key>; });
   static_assert(requires { std::is_trivially_constructible_v<Key>; });
