@@ -27,9 +27,6 @@ jobs:
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar-cache
-      - name: Print the content of the cache
-        run: |
-          ls -la ~/.sonar/build-wrapper-linux-x86
       - name: Download and set up sonar-scanner
         env:
           SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
@@ -46,13 +43,16 @@ jobs:
           path: ~/.sonar/build-wrapper-linux-x86
           key: ${{ runner.os }}-sonar-wrapper
       - name: Download and set up build-wrapper
-        if: steps.sonar-cache.outputs.cache-hit != 'true'
+        if: steps.sonar-wrapper.outputs.cache-hit != 'true'
         env:
           BUILD_WRAPPER_DOWNLOAD_URL: ${{ env.SONAR_SERVER_URL }}/static/cpp/build-wrapper-linux-x86.zip
         run: |
           curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
           unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
           echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
+      - name: Print the content of the cache
+        run: |
+          ls -la ~/.sonar/build-wrapper-linux-x86
       - name: Run build-wrapper
         run: |
           cmake -S . -B build -DCMAKE_CXX_FLAGS="--coverage"
