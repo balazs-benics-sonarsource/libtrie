@@ -27,10 +27,16 @@ jobs:
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar-cache
+      - name: Cache Sonar scanner
+        id: sonar-scanner
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux
+          key: ${{ runner.os }}-sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux
       - name: Download and set up sonar-scanner
         env:
           SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
-        if: steps.sonar-cache.outputs.cache-hit != 'true'
+        if: steps.sonar-scanner.outputs.cache-hit != 'true'
         run: |
           mkdir -p $HOME/.sonar
           curl -sSLo $HOME/.sonar/sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
