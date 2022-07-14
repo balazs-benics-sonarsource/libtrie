@@ -3,5 +3,5 @@ project(libtrie-example)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(libtrie-example src/libtrie-example.cpp)
+add_executable(libtrie-example  src/libtrie-example.cpp)
 
