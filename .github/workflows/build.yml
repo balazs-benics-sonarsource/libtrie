@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Cache SonarCloud packages
+      - name: Cache Sonar packages
         id: sonar-binaries
         uses: actions/cache@v3
         with:
-          path: ~/.sonar/cache
+          path: ~/.sonar
           key: ${{ runner.os }}-sonar-cache
       - name: Download and set up sonar-scanner
         env:
