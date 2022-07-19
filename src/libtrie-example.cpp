@@ -606,10 +606,13 @@ public:
 
           // Move the data back to the small representation.
           // errs << "moving the data back to the small repr\n";
-          std::move(std::begin(src_ptrs), std::end(src_ptrs),
-                    leaf_root->ptrs_begin());
-          std::move(std::begin(src_keys), std::end(src_keys),
-                    leaf_root->keys_begin());
+          std::ranges::move(src_ptrs, leaf_root->ptrs_begin());
+          std::ranges::move(src_keys, leaf_root->keys_begin());
+          int x = 3;
+          if (x < 2) {
+            // Introducing some dead code.
+            return x / (x - 3);
+          }
           leaf_root->meta() = new_meta;
         } else {
           // errs << "it was still too big to transform to small representation\n";
@@ -736,8 +739,7 @@ public:
     // without reallocation if we walk further doen the tree. So, I'm copying
     // here manually.
     state.reserve(other.state.capacity());
-    std::copy(other.state.begin(), other.state.end(),
-              std::back_inserter(state));
+    std::ranges::copy(other.state, std::back_inserter(state));
   }
   explicit trie_iterator(trie_tree<Key, T> &tree) {
     // If the tree is empty, return the end iterator.
